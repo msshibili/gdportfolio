@@ -1,0 +1,102 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  description String
+  year        String
+  client      String?
+  overview    String?
+  challenge   String?
+  approach    String?
+  outcome     String?
+  coverImage  String
+  gallery     String   @default("[]")
+  tools       String?
+  tags        String?
+  credits     String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model Story {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  category    String
+  coverImage  String
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("stories")
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  url          String
+  thumbnailUrl String?
+  mediumUrl    String?
+  largeUrl     String?
+  blurDataUrl  String?
+  width        Int      @default(0)
+  height       Int      @default(0)
+  size         Int      @default(0)
+  altText      String?
+  createdAt    DateTime @default(now())
+
+  @@map("media")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  sortOrder Int      @default(0)
+
+  @@map("categories")
+}
+
+model Settings {
+  id            String   @id @default("default")
+  designerName  String   @default("MUHAMMED SHIBILI")
+  title         String   @default("GRAPHIC DESIGNER & VISUAL STORYTELLER")
+  mainStatement String   @default("I CREATE VISUAL SYSTEMS, STORIES AND EXPERIENCES.")
+  available     Boolean  @default(true)
+  accentColor   String   @default("#C8FF3D")
+  email         String   @default("hello@shibili.design")
+  instagram     String   @default("https://instagram.com")
+  linkedin      String   @default("https://linkedin.com")
+  behance       String   @default("https://behance.net")
+  updatedAt     DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+
+  @@map("admin_users")
+}
